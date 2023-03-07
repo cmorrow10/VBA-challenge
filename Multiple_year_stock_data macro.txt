@@ -1,0 +1,105 @@
+Sub Multiple_year_stock_data()
+
+    'Header names.
+    Range("A1").Value = "<ticker>"
+    Range("B1").Value = "<date>"
+    Range("C1").Value = "<open>"
+    Range("D1").Value = "<high>"
+    Range("E1").Value = "<low>"
+    Range("F1").Value = "<close>"
+    Range("G1").Value = "<vol>"
+    
+        'Set column headers names.
+        Range("I1").Value = "Ticker"
+        Range("J1").Value = "Yearly Change"
+        Range("K1").Value = "Percent Change"
+        Range("L1").Value = "Total Stock Volume"
+    
+        Worksheets("2018").Range("A:L").Columns.AutoFit
+        Worksheets("2019").Range("A:L").Columns.AutoFit
+        Worksheets("2020").Range("A:L").Columns.AutoFit
+
+            'Set values.
+            Dim TickerName As String
+            Dim YearlyOpen As Double
+            Dim YearlyClose As Double
+            Dim YearlyChange As Double
+            Dim TotalStockVolume As Double
+            TotalStockVolume = 0
+            Dim SummaryTableRow As Long
+            SummaryTableRow = 2
+            Dim LastRow As Long
+            Dim PriorResult As Long
+            PriorResult = 2
+
+                'Set last row.
+                LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+                For I = 2 To LastRow
+
+                    'For total stock volume.
+                    TotalStockVolume = TotalStockVolume + Cells(I, 7).Value
+                    If Cells(I + 1, 1).Value <> Cells(I, 1).Value Then
+
+                'Set ticker name.
+                TickerName = Cells(I, 1).Value
+
+            'Print ticker name.
+            Range("I" & SummaryTableRow).Value = TickerName
+
+        'Print ticker total amount.
+         Range("L" & SummaryTableRow).Value = TotalStockVolume
+
+    'Reset ticker total.
+    TotalStockVolume = 0
+
+'Set yearly open.
+YearlyOpen = Range("C" & PriorResult)
+
+    'Set yearly close.
+    YearlyClose = Range("F" & I)
+
+        'Set yearly change.
+        YearlyChange = YearlyClose - YearlyOpen
+        Range("J" & SummaryTableRow).Value = YearlyChange
+
+            'Percent change.
+            If YearlyOpen = 0 Then
+            PercentChange = 0
+            Else
+            YearlyOpen = Range("C" & PriorResult)
+            PercentChange = YearlyChange / YearlyOpen
+            End If
+
+                'Format cells to percentage.
+                Range("K" & SummaryTableRow).Value = PercentChange
+                Range("K" & SummaryTableRow).NumberFormat = "0.00%"
+
+                    'Highlight cells, positive(green) negative(red).
+                    If Range("J" & SummaryTableRow).Value >= 0 Then
+                    Range("J" & SummaryTableRow).Interior.ColorIndex = 4
+                    Else
+                    Range("J" & SummaryTableRow).Interior.ColorIndex = 3
+                    End If
+
+                'Repeat by adding one to the summary table row.
+                SummaryTableRow = SummaryTableRow + 1
+                PriorResult = I + 1
+
+            End If
+
+        Next I
+    
+    Dim WS_Count As Integer
+        
+' Set WS_Count equal to the number of worksheets in the active workbook.
+WS_Count = ActiveWorkbook.Worksheets.Count
+
+    ' Begin the loop.
+    For J = 1 To WS_Count
+         
+        ' The following line shows how to reference a sheet within the loop by displaying the worksheet name in a dialog box.
+        MsgBox ActiveWorkbook.Worksheets(J).Name
+            
+    Next J
+
+End Sub

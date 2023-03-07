@@ -1,0 +1,83 @@
+
+Sub Functionality()
+
+    'Header names
+    Range("O1") = " "
+    Range("O2") = "Greatest % Increase"
+    Range("O3") = "Greatest % Decrease"
+    Range("O4") = "Greatest Total Volume"
+    Range("P1") = "Ticker"
+    Range("Q1") = "Value"
+        
+    Worksheets("2018").Range("A1:Q1").Font.Bold = True
+    Worksheets("2019").Range("A1:Q1").Font.Bold = True
+    Worksheets("2020").Range("A1:Q1").Font.Bold = True
+
+            'Autofit column widths.
+            Worksheets("2018").Range("O:Q").Columns.AutoFit
+            Worksheets("2019").Range("O:Q").Columns.AutoFit
+            Worksheets("2020").Range("O:Q").Columns.AutoFit
+
+                'Set dim.
+                Dim max As Double
+                max = 0
+                Dim min As Double
+                min = 0
+                Dim max_total_vol As Double
+                max_total_vol = 0
+                Dim min_row_index As Integer
+                Dim max_row_index As Integer
+                Dim max_total_vol_index As Integer
+                Dim LastRow As Long
+
+                    'Set last row.
+                    LastRow = Cells(Rows.Count, 9).End(xlUp).Row
+                            
+                    For I = 2 To LastRow
+
+                'Determine higher/lower for min/max.
+                If Cells(I, 11) > max Then
+                max = Cells(I, 11)
+                max_row_index = I
+                End If
+                                
+                If Cells(I, 11) < min Then
+                min = Cells(I, 11)
+                min_row_index = I
+                End If
+
+            'Continue if higher for max total volume.
+            If Cells(I, 12) > max_total_vol Then
+            max_total_vol = Cells(I, 12)
+            max_total_vol_index = I
+            End If
+            Next I
+
+        'Print values.
+        Range("P2") = Cells(max_row_index, 9).Value
+        Range("P3") = Cells(min_row_index, 9).Value
+        Range("P4") = Cells(max_total_vol_index, 9).Value
+        
+        Range("Q2") = max
+        Range("Q3") = min
+        Range("Q4") = max_total_vol
+        
+        Range("Q2").NumberFormat = "0.00%"
+        Range("Q3").NumberFormat = "0.00%"
+
+    'Loop through worksheets.
+    Dim WS_Count As Integer
+    
+'Set WS_Count equal to the number of worksheets in the active workbook.
+WS_Count = ActiveWorkbook.Worksheets.Count
+    
+    'Begin the loop.
+    For J = 1 To WS_Count
+             
+'The following line shows how to reference a sheet within the loop by displaying the worksheet name in a dialog box.
+MsgBox ActiveWorkbook.Worksheets(J).Name
+                
+    Next J
+        
+
+End Sub
