@@ -1,4 +1,4 @@
-# VBA-challenge
+# VBA-Challenge
 ---
 ### Overview
 ##### For this project, a Multiple_year_stock_data macro was created to loop through all stocks for one year and output the following information: the ticker symbol, yearly change from the opening price at the beginning of a given year to the closing price at the end of that year, and the percentage change from the opening price at the beginning of a given year to the closing price at the end of that year. A Functioonality macro was also created to return the stock with the "Greatest % increase", "Greatest % decrease", and "Greatest total volume". Both macro's run off a button for year's 2018, 2019, and 2020.
